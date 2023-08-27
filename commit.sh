@@ -1,6 +1,7 @@
 #!/bin/bash
 
 default_branch="main"  # Change this to your desired default branch
+github_token="$GH_TOKEN"  # Change this to the name of the secret containing your Personal Access Token
 
 # Check if the user provided the directory and commit message as arguments
 if [ "$#" -lt 2 ]; then
@@ -30,7 +31,7 @@ check_changes() {
 commit_and_push() {
   git -C "$directory_path" add .
   git -C "$directory_path" commit -m "$commit_message"
-  git -C "$directory_path" push origin "$branch_name"
+  git -C "$directory_path" push "https://${github_token}@github.com/$GITHUB_REPOSITORY.git" "$branch_name"
 }
 
 # Main script logic
