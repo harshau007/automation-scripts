@@ -1,20 +1,24 @@
 #!/bin/bash
 
 default_branch="main"  # Change this to your desired default branch
-github_token="$PAT_TOKEN"  # Change this to the name of the secret containing your Personal Access Token
+github_token="$GH_TOKEN"  # Change this to the name of the secret containing your Personal Access Token
 
 # Check if the user provided the directory and commit message as arguments
-if [ "$#" -lt 2 ]; then
-  echo "Usage: $0 <directory_path> [<branch_name>] <commit_message>"
+if [ "$#" -lt 1 ]; then
+  echo "Usage: $0 [<directory_path>] [<branch_name>] <commit_message>"
   exit 1
 fi
 
-directory_path="$1"
-
-if [ "$#" -eq 2 ]; then
+if [ "$#" -eq 1 ]; then
+  directory_path="."
+  branch_name="$default_branch"
+  commit_message="$1"
+elif [ "$#" -eq 2 ]; then
+  directory_path="$1"
   branch_name="$default_branch"
   commit_message="$2"
 else
+  directory_path="$1"
   branch_name="$2"
   commit_message="$3"
 fi
