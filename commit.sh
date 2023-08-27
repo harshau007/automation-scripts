@@ -4,7 +4,7 @@ default_branch="main"  # Change this to your desired default branch
 
 # Check if the user provided the directory and commit message as arguments
 if [ "$#" -lt 1 ]; then
-  echo "Usage: $0 [<directory_path>] [<branch-name>] <commit_message>"
+  echo "Usage: $0 [<directory_path>] [<branch_name>] <commit_message>"
   exit 1
 fi
 
