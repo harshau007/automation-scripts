@@ -1,7 +1,7 @@
 #!/bin/bash
 
 default_branch="main"  # Change this to your desired default branch
-github_token="$GH_TOKEN"  # Change this to the name of the secret containing your Personal Access Token
+github_token="$PAT_TOKEN"  # Change this to the name of the secret containing your Personal Access Token
 
 # Check if the user provided the directory and commit message as arguments
 if [ "$#" -lt 2 ]; then
