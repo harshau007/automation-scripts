@@ -28,7 +28,7 @@ def update_references(directory=".", exclude_exts=[]):
 
   for root, dirs, files in os.walk(directory):
     for file in files:
-      if file.lower().endswith((".js", ".jsx", ".ts", ".tsx", ".py", ".html")):
+      if file.lower().endswith((".js", ".jsx", ".ts", ".tsx")):
         file_path = os.path.join(root, file)
 
         try:
