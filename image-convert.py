@@ -50,7 +50,8 @@ def update_references(directory=".", exclude_exts=[]):
           patterns = [
             re.compile(r'"\s*(.+)(.jpg)"'), 
             re.compile(r'"\s*(.+)(.png)"'),
-            re.compile(r'"\s*(.+)(.jpeg)"')
+            re.compile(r'"\s*(.+)(.jpeg)"'),
+            re.compile(r'src="(.+)(.jpg|jpeg|png)"')
           ]
 
           for pattern in patterns:
