@@ -1,45 +1,34 @@
 import os
 import re
 import sys
+import shutil
 from pathlib import Path
-from PIL import Image, ExifTags, ImageOps
-import piexif
-from typing import Tuple
 
-def convert_to_webp(img_dir):
-  for root, _, files in os.walk(img_dir):
-    for f in files:
-      if f.endswith(".jpg") or f.endswith(".jpeg") or f.endswith(".png"):
+from PIL import Image, UnidentifiedImageError
 
-        img_path = os.path.join(root, f)
-        image = Image.open(img_path)
 
-        # Find orientation tag 
-        orientation = None
-        for key in ExifTags.TAGS.keys():
-          if ExifTags.TAGS[key] == 'Orientation':
-            orientation = key
-            break
+def convert_to_webp(directory):
+    for root, _, files in os.walk(directory):
+        for file in files:
+            if file.lower().endswith((".png", ".jpg", ".jpeg")):
+                input_path = os.path.join(root, file)
+                output_path = os.path.join(root, Path(file).stem + ".webp")
 
-        exif = image.getexif()
+                try:
+                    img = Image.open(input_path)
+                    img.save(output_path, "WEBP")
+                    print(f"Converted {input_path} to {output_path}")
+                except (OSError, UnidentifiedImageError) as err:
+                    print(f"Error converting {input_path}: {err}")
 
-        if orientation and orientation in exif:
-          if exif[orientation] == 3:
-            image = image.rotate(180, expand=True)
-          elif exif[orientation] == 6:
-            image = image.rotate(270, expand=True)  
-          elif exif[orientation] == 8:
-            image = image.rotate(90, expand=True)
-
-        webp_img = image.convert("RGBA")  
-
-        webp_path = f"{img_path.rsplit('.', 1)[0]}.webp"
-        webp_img.save(webp_path)
 
 def update_references(directory=".", exclude_exts=[]):
+  image_extensions = [".png", ".jpg", ".jpeg"]
+
+
   for root, dirs, files in os.walk(directory):
     for file in files:
-      if file.lower().endswith((".js", ".jsx", ".ts", ".tsx")):
+      if file.lower().endswith((".js", ".jsx", ".ts", ".tsx", ".py", ".html", ".astro")):
         file_path = os.path.join(root, file)
 
         try:
@@ -50,8 +39,7 @@ def update_references(directory=".", exclude_exts=[]):
           patterns = [
             re.compile(r'"\s*(.+)(.jpg)"'), 
             re.compile(r'"\s*(.+)(.png)"'),
-            re.compile(r'"\s*(.+)(.jpeg)"'),
-            re.compile(r'src="(.+)(.jpg|jpeg|png)"')
+            re.compile(r'"\s*(.+)(.jpeg)"')
           ]
 
           for pattern in patterns:
