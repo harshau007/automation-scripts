@@ -10,7 +10,7 @@ from PIL import Image, UnidentifiedImageError
 def convert_to_webp(directory):
     for root, _, files in os.walk(directory):
         for file in files:
-            if file.lower().endswith((".png", ".jpg", ".jpeg")):
+            if file.lower().endswith((".png", ".jpg", ".jpeg", ".JPG")):
                 input_path = os.path.join(root, file)
                 output_path = os.path.join(root, Path(file).stem + ".webp")
 
@@ -23,7 +23,7 @@ def convert_to_webp(directory):
 
 
 def update_references(directory=".", exclude_exts=[]):
-  image_extensions = [".png", ".jpg", ".jpeg"]
+  image_extensions = [".png", ".jpg", ".jpeg", ".JPG"]
 
 
   for root, dirs, files in os.walk(directory):
@@ -39,7 +39,8 @@ def update_references(directory=".", exclude_exts=[]):
           patterns = [
             re.compile(r'"\s*(.+)(.jpg)"'), 
             re.compile(r'"\s*(.+)(.png)"'),
-            re.compile(r'"\s*(.+)(.jpeg)"')
+            re.compile(r'"\s*(.+)(.jpeg)"'),
+            re.compile(r'"\s*(.+)(.JPG)"')
           ]
 
           for pattern in patterns:
@@ -64,7 +65,7 @@ def update_references(directory=".", exclude_exts=[]):
 def delete_images_by_ext(repo_path):
   for root, dirs, files in os.walk(repo_path):
     for file in files:
-      if file.endswith('.png') or file.endswith('.jpg') or file.endswith('.jpeg'):
+      if file.endswith('.png') or file.endswith('.jpg') or file.endswith('.jpeg') or file.endswith('.JPG'):
         os.remove(os.path.join(root, file))
 
 def main():
